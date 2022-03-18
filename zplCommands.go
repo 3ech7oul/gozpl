@@ -3,6 +3,8 @@ package zpl
 import (
 	"errors"
 	"fmt"
+
+	"github.com/signintech/gopdf"
 )
 
 var zplCommnads = map[string]ZplHandlerFunc{
@@ -15,7 +17,7 @@ var zplCommnads = map[string]ZplHandlerFunc{
 	"^CF": zplCfHandler,
 }
 
-type ZplHandlerFunc func(s string)
+type ZplHandlerFunc func(c Command)
 
 type Command struct {
 	ZplComm    string
@@ -47,6 +49,7 @@ func (c *Command) AddToBuffer(b string) {
 	c.Buffer = append(c.Buffer, b)
 }
 
-func zplCfHandler(s string) {
-	fmt.Println(s)
+func zplCfHandler(c Command) {
+	pdf := gopdf.GoPdf{}
+	fmt.Println(pdf)
 }
