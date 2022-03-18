@@ -4,9 +4,9 @@ import "fmt"
 
 func Parese(input []byte) {
 	var buffCommands = make(map[int]Command)
+	var currentCommand Command
 
 	for i, item := range input {
-		//	var c Command
 		var commandToken string
 
 		if "^" == string(item) {
@@ -14,20 +14,19 @@ func Parese(input []byte) {
 		}
 
 		comm, err := CreateCommand(commandToken)
+
 		if nil == err {
-			buffCommands[i] = comm
+			if 0 < len(currentCommand.ZplComm) {
+				buffCommands[i] = currentCommand
+			}
+			currentCommand = comm
+		} else {
+			currentCommand.AddToBuffer(string(item))
 		}
 	}
-	/*
-		var commadIndex int
-		for i, item := range input {
-			c, ok := buffCommands[i]
-			if ok {
-				commadIndex = 0
-			}
 
-		}
-	*/
-	//fmt.Print(buffCommands)
+	fmt.Print(buffCommands)
+
+	//fmt.Print(currentCommand)
 
 }

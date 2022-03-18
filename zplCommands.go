@@ -1,29 +1,31 @@
 package zpl
 
-import "errors"
+import (
+	"errors"
+	"fmt"
+)
 
-var zplCommnads = map[string]string{
-	"^FD": "",
-	"^XA": "",
-	"^FS": "",
-	"^GB": "",
-	"^FO": "",
-	"^CF": "",
+var zplCommnads = map[string]ZplHandlerFunc{
+	//"^FD": "",
+	//"^FX": "",
+	//"^XA": "",
+	//"^FS": "",
+	//"^GB": "",
+	//"^FO": "",
+	"^CF": zplCfHandler,
 }
 
-type ZplComm interface {
-	hasParameters() bool
-}
+type ZplHandlerFunc func(s string)
 
 type Command struct {
 	ZplComm    string
-	Buffer     []byte
+	Buffer     []string
 	Parameters []CommandParameter
 }
 
 type CommandParameter struct {
-	Parameter string
-	Value     string
+	Index int
+	Value string
 }
 
 func CreateCommand(command string) (Command, error) {
@@ -41,6 +43,10 @@ func CreateCommand(command string) (Command, error) {
 	return result, errors.New("Not a command")
 }
 
-func (c *Command) AddToBuffer(b byte) {
+func (c *Command) AddToBuffer(b string) {
 	c.Buffer = append(c.Buffer, b)
+}
+
+func zplCfHandler(s string) {
+	fmt.Println(s)
 }
